@@ -98,19 +98,15 @@
                     throw new Error("Failed to fetch URL");
                 }
                 downloadedSource = await response.text();
-                // Create a Blob from the source code
                 const blob = new Blob([downloadedSource], { type: 'text/html' });
-                // Generate a download link
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
                 link.download = 'source-code.html';
                 link.textContent = 'Download Source Code File';
                 link.style.display = 'block';
-                // Add the link to the screen
                 const fileLinkContainer = document.getElementById('fileLinkContainer');
-                fileLinkContainer.innerHTML = ''; // Clear any previous links
+                fileLinkContainer.innerHTML = '';
                 fileLinkContainer.appendChild(link);
-                // Show success message
                 document.getElementById('result').textContent = "Source code downloaded successfully.";
             } catch (error) {
                 document.getElementById('result').textContent = `Error: ${error.message}`;
@@ -142,7 +138,15 @@
                     },
                     body: JSON.stringify({
                         model: "gpt-4o",
-                        prompt: document.getElementById('useDownloadedSource').checked ? prompt + "\n" + downloadedSource : prompt,
+                        messages: [
+                            { role: "system", content: "You are a helpful assistant." },
+                            {
+                                role: "user",
+                                content: document.getElementById('useDownloadedSource').checked
+                                    ? prompt + "\n" + downloadedSource
+                                    : prompt
+                            }
+                        ],
                         max_tokens: 150
                     })
                 });
@@ -150,7 +154,7 @@
                     throw new Error("Failed to get response from OpenAI");
                 }
                 const data = await response.json();
-                document.getElementById('result').textContent = data.choices[0].text.trim();
+                document.getElementById('result').textContent = data.choices[0].message.content.trim();
             } catch (error) {
                 document.getElementById('result').textContent = `Error: ${error.message}`;
             }
