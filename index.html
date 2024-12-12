@@ -3,19 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create AI powered GTm tags</title>
+    <title>Create AI powered GTM Tags</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f9;
             color: #333;
+            display: flex;
+            justify-content: center; /* Align horizontally */
+            align-items: center;    /* Align vertically */
+            height: 100vh;          /* Full viewport height */
         }
-        .hidden {
-            display: none;
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
+
         button {
             margin-top: 10px;
             padding: 10px;
@@ -25,9 +36,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
         input[type="text"], input[type="password"], textarea, select {
             width: 100%;
             padding: 10px;
@@ -36,36 +49,47 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         h1, h3 {
             color: #2c3e50;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Create AI powered GTm tags</h1>
-    <h3>Enter URL to Download Source Code</h3>
-    <div style="display: flex; align-items: center; margin-bottom: 15px;"><label for="url" style="flex: 1; margin-right: 10px;">Webpage URL:</label>
-    <input type="text" id="url" placeholder="Enter webpage URL" style="flex: 2; margin-right: 10px;">
-    <button onclick="downloadSourceCode()" style="flex: 1;">Download Source Code</button></div>
+    <div class="container">
+        <h1>Create AI powered GTM Tags</h1>
+        <h3>Enter URL to Download Source Code</h3>
+        <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <label for="url" style="flex: 1; margin-right: 10px;">Webpage URL:</label>
+            <input type="text" id="url" placeholder="Enter webpage URL" style="flex: 2; margin-right: 10px;">
+            <button onclick="downloadSourceCode()" style="flex: 1;">Download Source Code</button>
+        </div>
 
-    <h3>OpenAI Prompt</h3><div style="display: flex; align-items: center;"><div style="display: flex; align-items: center; margin-bottom: 15px;"><label for="apiKey" style="flex: 1; margin-right: 10px;">OpenAI API Key:</label>
-    <input type="password" id="apiKey" placeholder="Enter your OpenAI API Key" style="flex: 2; margin-right: 10px;"></div></div>
+        <h3>OpenAI Prompt</h3>
+        <div style="display: flex; align-items: center;">
+            <label for="apiKey" style="flex: 1; margin-right: 10px;">OpenAI API Key:</label>
+            <input type="password" id="apiKey" placeholder="Enter your OpenAI API Key" style="flex: 2;">
+        </div>
 
-    <label for="prompt">OpenAI Prompt:</label>
-    <textarea id="prompt" rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
-    <select id="prePopulatedPrompts" onchange="setPrePopulatedPrompt()" style="width: 100%; margin-bottom: 15px;">
-        <option value="">Select a pre-defined prompt</option>
-        <option value="Summarize the main content of the page.">Summarize Page</option>
-        <option value="List all the headings and subheadings.">List Headings</option>
-        <option value="Extract all the hyperlinks present on the webpage.">Extract Hyperlinks</option>
-    </select></div></div>
-    
-    <input type="checkbox" id="useDownloadedSource" checked> Use downloaded source code<br>
+        <label for="prompt">OpenAI Prompt:</label>
+        <textarea id="prompt" rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
+        <select id="prePopulatedPrompts" onchange="setPrePopulatedPrompt()" style="width: 100%; margin-bottom: 15px;">
+            <option value="">Select a pre-defined prompt</option>
+            <option value="Summarize the main content of the page.">Summarize Page</option>
+            <option value="List all the headings and subheadings.">List Headings</option>
+            <option value="Extract all the hyperlinks present on the webpage.">Extract Hyperlinks</option>
+        </select>
+        <input type="checkbox" id="useDownloadedSource" checked> Use downloaded source code<br>
+
+        <button onclick="useOpenAi()" style="margin-top: 10px;">Send Prompt to OpenAI</button>
+
+        <h3>Results:</h3>
+        <pre id="result"></pre>
     </div>
-    <button onclick="useOpenAi()" style="margin-top: 10px;">Send Prompt to OpenAI</button>
-
-    <h3>Results:</h3>
-    <pre id="result"></pre>
 
     <script>
         let downloadedSource = "";
@@ -117,9 +141,7 @@
                     },
                     body: JSON.stringify({
                         model: "text-davinci-003",
-                        prompt: document.getElementById('useDownloadedSource').checked ? prompt + "
-
-" + downloadedSource : prompt,
+                        prompt: document.getElementById('useDownloadedSource').checked ? prompt + "\n" + downloadedSource : prompt,
                         max_tokens: 150
                     })
                 });
@@ -129,9 +151,4 @@
                 const data = await response.json();
                 document.getElementById('result').textContent = data.choices[0].text.trim();
             } catch (error) {
-                document.getElementById('result').textContent = `Error: ${error.message}`;
-            }
-        }
-    </script>
-</body>
-</html>
+                document.getElementById
