@@ -19,7 +19,7 @@ async function useOpenAi() {
                 "Authorization": `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: "gpt-4", // Use "gpt-4" or "gpt-3.5-turbo" as per your preference or quota availability
+                model: "gpt-4o", // Use "gpt-4" or "gpt-3.5-turbo" as per your preference or quota availability
                 messages: [
                     { role: "system", content: "You are a helpful assistant." },
                     { role: "user", content: prompt }
