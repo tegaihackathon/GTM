@@ -92,7 +92,7 @@
             
             <!-- Option to select between creating a Pageview Trigger or Uploading Custom Trigger -->
             <div>
-                <h2>Select Trigger Type</h2>
+                <h3>Select Trigger Type</h3>
                 <input type="radio" id="createPageviewTriggerOption" name="triggerType" value="pageview" checked />
                 <label for="createPageviewTriggerOption">Create Pageview Trigger</label><br/>
                 <input type="radio" id="uploadCustomTriggerOption" name="triggerType" value="customtrigger" />
@@ -102,10 +102,10 @@
             <!-- Form for Creating Pageview Trigger -->
             <div id="pageviewForm" style="display:block;">
                 <h3>Create Pageview Trigger</h3>
-                <label for="triggerName">Trigger Name:</label>
+                <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required />
                 <br/>
-                <label for="pagePathValue">Page Path Value:</label>
+                <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Value:</label>
                 <input type="text" id="pagePathValue" placeholder="Enter page path value" required />
                 <br/>
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
@@ -121,7 +121,7 @@
             <div>
                 <h3>Select Tag Type</h3>
                 <input type="radio" id="createPageviewTagOption" name="tagType" value="pageview" checked />
-                <label for="createPageviewTagOption">Create Pageview Tag</label><br/>
+                <label for="createPageviewTagOption" >Create Pageview Tag</label><br/>
                 <input type="radio" id="uploadCustomTagOption" name="tagType" value="customtag" />
                 <label for="uploadCustomTagOption">Create Custom Tag</label>
             </div>
@@ -129,10 +129,10 @@
             <!-- Form for Creating Pageview Tag -->
             <div id="pageviewTagForm" style="display:block;">
                 <h3>Create Pageview Tag</h3>
-                <label for="tagName">Tag Name:</label>
+                <label for="tagName"style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required />
                 <br/>
-                <label for="eventName">Event Name:</label>
+                <label for="eventName" style="flex: 1; margin-right: 10px;">Event Name:</label>
                 <input type="text" id="eventName" placeholder="Enter event name" required />
                 <br/>
                 <button id="createPageviewTagBtn">Create Pageview Tag</button>
