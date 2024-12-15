@@ -103,6 +103,18 @@
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
             </div>
         
+            <!-- New Form for Pageview Tag -->
+            <div id="pageviewTagForm">
+                <h2>Create Pageview Tag</h2>
+                <label for="tagName">Tag Name:</label>
+                <input type="text" id="tagName" placeholder="Enter tag name" required />
+                <br/>
+                <label for="eventName">Event Name:</label>
+                <input type="text" id="eventName" placeholder="Enter event name" required />
+                <br/>
+                <button id="createPageviewTagBtn">Create Pageview Tag</button>
+            </div>
+        
             <div id="status"></div>
             <div id="triggerInfo" style="margin-top:10px; color:green;"></div>
             <div id="tagInfo" style="margin-top:10px; color:blue;"></div> <!-- For displaying tag info -->
@@ -192,6 +204,7 @@
     const RESPONSE_TYPE = 'token'; // For Implicit Flow
     const STATE = 'xyz'; // A random state to protect against CSRF
     let ACCESS_TOKEN = null; // To store the token after authorization
+    let createdTriggerId = null; // Store the created trigger ID
 
     // Step 1: Build the authorization URL
     const authUrl = `${AUTH_URI}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&response_type=${RESPONSE_TYPE}&state=${STATE}`;
@@ -262,6 +275,7 @@
             if (response.ok) {
                 document.getElementById('status').innerHTML = 'Trigger created successfully!';
                 document.getElementById('triggerInfo').innerHTML = `Trigger ID: <strong>${data.triggerId}</strong>`;
+                createdTriggerId = data.triggerId; // Store trigger ID
                 console.log('Trigger Created:', data);
             } else {
                 document.getElementById('status').innerHTML = 'Failed to create trigger: ' + data.error.message;
@@ -364,10 +378,47 @@
         createTrigger(triggerConfig); // Call createTrigger with the generated config
     });
 
-    // Step 6: Event listener for the authorize button
+    // Step 8: Handle form submission to create Pageview tag
+    document.getElementById('createPageviewTagBtn').addEventListener('click', () => {
+        const tagName = document.getElementById('tagName').value;
+        const eventName = document.getElementById('eventName').value;
+
+        if (!tagName || !eventName || !createdTriggerId) {
+            alert('Please provide both Tag Name, Event Name, and ensure a trigger is created first.');
+            return;
+        }
+
+        const tagConfig = {
+            "name": tagName,
+            "type": "gaawe",
+            "parameter": [
+                {
+                    "type": "template",
+                    "key": eventName,
+                    "value": "form_submit"
+                },
+                {
+                    "type": "template",
+                    "key": "measurementIdOverride",
+                    "value": "{{GA4ID}}"
+                }
+            ],
+            "firingTriggerId": [createdTriggerId], // Use the trigger ID from previous step
+            "monitoringMetadata": {
+                "type": "map"
+            },
+            "consentSettings": {
+                "consentStatus": "notSet"
+            }
+        };
+
+        createTag(tagConfig); // Call createTag with the generated config
+    });
+
+    // Step 9: Event listener for the authorize button
     document.getElementById('authBtn').addEventListener('click', startAuth);
 
-    // Step 7: Check if we are on the callback URL to handle token extraction
+    // Step 10: Check if we are on the callback URL to handle token extraction
     if (window.location.hash) {
         handleCallback();
     }
