@@ -160,10 +160,14 @@
             }
         }
     </script>
-    <div>
-    <h1>OAuth 2.0 Authentication</h1>
+<div>
+    <h1>OAuth 2.0 Authentication & GTM Trigger/Tag Creation</h1>
     <button id="authBtn">Authorize</button>
     <div id="status"></div>
+    
+    <input type="file" id="triggerFile" accept=".json">
+    <input type="file" id="tagFile" accept=".json">
+    <button id="createBtn">Create Trigger & Tag</button>
 
     <script>
         const CLIENT_ID = '351357897948-jqbvrralaqekfjj3bhfnul2mgd40kgt7.apps.googleusercontent.com';
@@ -172,6 +176,8 @@
         const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
         const RESPONSE_TYPE = 'token'; // For Implicit Flow
         const STATE = 'xyz'; // A random state to protect against CSRF
+
+        let accessToken = null;
 
         // Step 1: Build the authorization URL
         const authUrl = `${AUTH_URI}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&response_type=${RESPONSE_TYPE}&state=${STATE}`;
@@ -184,7 +190,7 @@
         // Step 3: Check if the access token is present in the URL after redirect
         function handleCallback() {
             const urlParams = new URLSearchParams(window.location.hash.substring(1)); // Remove '#' and parse params
-            const accessToken = urlParams.get('access_token');
+            accessToken = urlParams.get('access_token');
             const error = urlParams.get('error');
             
             if (accessToken) {
@@ -205,6 +211,80 @@
         if (window.location.hash) {
             handleCallback();
         }
+
+        // Step 8: Function to create trigger
+        function createTrigger(triggerJson) {
+            const apiUrl = `https://tagmanager.googleapis.com/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/triggers`;
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(triggerJson)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Trigger created:', data);
+                document.getElementById('status').innerHTML = 'Trigger Created!';
+            })
+            .catch(error => {
+                console.error('Error creating trigger:', error);
+                document.getElementById('status').innerHTML = 'Error creating trigger';
+            });
+        }
+
+        // Step 9: Function to create tag
+        function createTag(tagJson) {
+            const apiUrl = `https://tagmanager.googleapis.com/v2/accounts/{accountId}/containers/{containerId}/workspaces/{workspaceId}/tags`;
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tagJson)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Tag created:', data);
+                document.getElementById('status').innerHTML = 'Tag Created!';
+            })
+            .catch(error => {
+                console.error('Error creating tag:', error);
+                document.getElementById('status').innerHTML = 'Error creating tag';
+            });
+        }
+
+        // Step 10: Event listener for the create button
+        document.getElementById('createBtn').addEventListener('click', () => {
+            const triggerFile = document.getElementById('triggerFile').files[0];
+            const tagFile = document.getElementById('tagFile').files[0];
+            
+            if (triggerFile && tagFile) {
+                // Read the JSON files
+                const triggerReader = new FileReader();
+                const tagReader = new FileReader();
+                
+                triggerReader.onload = function(event) {
+                    const triggerJson = JSON.parse(event.target.result);
+                    
+                    tagReader.onload = function(event) {
+                        const tagJson = JSON.parse(event.target.result);
+                        
+                        // Create trigger and tag
+                        createTrigger(triggerJson);
+                        createTag(tagJson);
+                    }
+                    
+                    tagReader.readAsText(tagFile);
+                }
+                
+                triggerReader.readAsText(triggerFile);
+            } else {
+                document.getElementById('status').innerHTML = 'Please upload both trigger and tag JSON files.';
+            }
+        });
     </script>
 </div>
 </body>
