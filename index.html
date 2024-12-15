@@ -160,5 +160,52 @@
             }
         }
     </script>
+    <div>
+    <h1>OAuth 2.0 Authentication</h1>
+    <button id="authBtn">Authorize</button>
+    <div id="status"></div>
+
+    <script>
+        const CLIENT_ID = '351357897948-jqbvrralaqekfjj3bhfnul2mgd40kgt7.apps.googleusercontent.com';
+        const REDIRECT_URI = 'https://tegaihackathon.github.io/GTM/callback';
+        const SCOPE = 'https://www.googleapis.com/auth/tagmanager.edit.containers';
+        const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const RESPONSE_TYPE = 'token'; // For Implicit Flow
+        const STATE = 'xyz'; // A random state to protect against CSRF
+
+        // Step 1: Build the authorization URL
+        const authUrl = `${AUTH_URI}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&response_type=${RESPONSE_TYPE}&state=${STATE}`;
+
+        // Step 2: Function to start the OAuth 2.0 flow
+        function startAuth() {
+            window.location.href = authUrl;
+        }
+
+        // Step 3: Check if the access token is present in the URL after redirect
+        function handleCallback() {
+            const urlParams = new URLSearchParams(window.location.hash.substring(1)); // Remove '#' and parse params
+            const accessToken = urlParams.get('access_token');
+            const error = urlParams.get('error');
+            
+            if (accessToken) {
+                // Step 4: Successful authorization
+                document.getElementById('status').innerHTML = 'Authorized!';
+                console.log('Access Token:', accessToken); // You can use this token for API requests
+            } else if (error) {
+                // Step 5: Handle errors
+                document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
+                console.log('Error:', error);
+            }
+        }
+
+        // Step 6: Event listener for the authorize button
+        document.getElementById('authBtn').addEventListener('click', startAuth);
+
+        // Step 7: Check if we are on the callback URL to handle token extraction
+        if (window.location.hash) {
+            handleCallback();
+        }
+    </script>
+</div>
 </body>
 </html>
