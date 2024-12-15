@@ -160,9 +160,11 @@
             }
         }
     </script>
-    <div>
+<div>
     <h1>OAuth 2.0 Authentication</h1>
     <button id="authBtn">Authorize</button>
+    <button id="uploadBtn">Upload trigger.json</button>
+    <input type="file" id="fileInput" style="display:none" accept="application/json"/>
     <div id="status"></div>
 
     <script>
@@ -172,6 +174,7 @@
         const AUTH_URI = 'https://accounts.google.com/o/oauth2/v2/auth';
         const RESPONSE_TYPE = 'token'; // For Implicit Flow
         const STATE = 'xyz'; // A random state to protect against CSRF
+        let ACCESS_TOKEN = null; // To store the token after authorization
 
         // Step 1: Build the authorization URL
         const authUrl = `${AUTH_URI}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&response_type=${RESPONSE_TYPE}&state=${STATE}`;
@@ -188,20 +191,68 @@
             const error = urlParams.get('error');
             
             if (accessToken) {
-                // Step 4: Successful authorization
-                document.getElementById('status').innerHTML = 'Authorized!';
-                console.log('Access Token:', accessToken); // You can use this token for API requests
+                ACCESS_TOKEN = accessToken;
+                document.getElementById('status').innerHTML = 'Authorized! Ready to upload trigger.json';
+                console.log('Access Token:', accessToken);
             } else if (error) {
-                // Step 5: Handle errors
                 document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
                 console.log('Error:', error);
             }
         }
 
-        // Step 6: Event listener for the authorize button
+        // Step 4: Upload and Create Trigger Functionality
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!ACCESS_TOKEN) {
+                alert('Please authorize first!');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const triggerConfig = JSON.parse(e.target.result);
+                createTrigger(triggerConfig);
+            };
+            reader.readAsText(file);
+        });
+
+        async function createTrigger(triggerConfig) {
+            const accountId = '6260523786';
+            const containerId = '201503240';
+            const workspaceId = '26';
+            const url = `https://www.googleapis.com/tagmanager/v2/accounts/${accountId}/containers/${containerId}/workspaces/${workspaceId}/triggers`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(triggerConfig)
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('status').innerHTML = 'Trigger created! ID: ' + data.triggerId;
+                    console.log('Trigger Created:', data);
+                } else {
+                    document.getElementById('status').innerHTML = 'Failed to create trigger: ' + data.error.message;
+                    console.error('Error:', data);
+                }
+            } catch (error) {
+                document.getElementById('status').innerHTML = 'Error creating trigger: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+
+        // Step 5: Event listener for the authorize button
         document.getElementById('authBtn').addEventListener('click', startAuth);
 
-        // Step 7: Check if we are on the callback URL to handle token extraction
+        // Step 6: Check if we are on the callback URL to handle token extraction
         if (window.location.hash) {
             handleCallback();
         }
