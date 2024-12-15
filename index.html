@@ -244,7 +244,7 @@
                 const data = await response.json();
                 if (response.ok) {
                     document.getElementById('status').innerHTML = 'Trigger created successfully!';
-                    document.getElementById('triggerInfo').innerHTML = `Trigger ID: <strong>${data.triggerId
+                    document.getElementById('triggerInfo').innerHTML = `Trigger ID: <strong>${data.triggerId}</strong>`;
                     console.log('Trigger Created:', data);
                 } else {
                     document.getElementById('status').innerHTML = 'Failed to create trigger: ' + data.error.message;
