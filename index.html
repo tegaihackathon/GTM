@@ -83,6 +83,17 @@
         <button onclick="useOpenAi()" style="margin-top: 10px;">Send Prompt to OpenAI</button>
         <h3>Results:</h3>
         <pre id="result"></pre>
+        <div>
+            <h1>OAuth 2.0 Authentication</h1>
+            <button id="authBtn">Authorize</button>
+            <button id="uploadTriggerBtn">Upload trigger.json</button>
+            <button id="uploadTagBtn">Upload tag.json</button> <!-- Button for uploading tag -->
+            <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
+            <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
+            <div id="status"></div>
+            <div id="triggerInfo" style="margin-top:10px; color:green;"></div>
+            <div id="tagInfo" style="margin-top:10px; color:blue;"></div> <!-- For displaying tag info -->
+        </div>
     </div>
     <script>
         let downloadedSource = "";
@@ -160,17 +171,6 @@
             }
         }
     </script>
-<div>
-    <h1>OAuth 2.0 Authentication</h1>
-    <button id="authBtn">Authorize</button>
-    <button id="uploadTriggerBtn">Upload trigger.json</button>
-    <button id="uploadTagBtn">Upload tag.json</button> <!-- Button for uploading tag -->
-    <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
-    <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
-    <div id="status"></div>
-    <div id="triggerInfo" style="margin-top:10px; color:green;"></div>
-    <div id="tagInfo" style="margin-top:10px; color:blue;"></div> <!-- For displaying tag info -->
-
     <script>
         const CLIENT_ID = '351357897948-jqbvrralaqekfjj3bhfnul2mgd40kgt7.apps.googleusercontent.com';
         const REDIRECT_URI = 'https://tegaihackathon.github.io/GTM';
@@ -324,6 +324,5 @@
             handleCallback();
         }
     </script>
-</div>
 </body>
 </html>
