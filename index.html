@@ -166,7 +166,8 @@
     <button id="uploadBtn">Upload trigger.json</button>
     <input type="file" id="fileInput" style="display:none" accept="application/json"/>
     <div id="status"></div>
-
+    <div id="triggerInfo" style="margin-top:10px; color:green;"></div>
+    
     <script>
         const CLIENT_ID = '351357897948-jqbvrralaqekfjj3bhfnul2mgd40kgt7.apps.googleusercontent.com';
         const REDIRECT_URI = 'https://tegaihackathon.github.io/GTM';
@@ -214,8 +215,13 @@
             }
             const reader = new FileReader();
             reader.onload = function(e) {
-                const triggerConfig = JSON.parse(e.target.result);
-                createTrigger(triggerConfig);
+                try {
+                    const triggerConfig = JSON.parse(e.target.result);
+                    console.log('Trigger Configuration:', triggerConfig);
+                    createTrigger(triggerConfig);
+                } catch (error) {
+                    alert('Invalid JSON file');
+                }
             };
             reader.readAsText(file);
         });
@@ -237,7 +243,8 @@
                 });
                 const data = await response.json();
                 if (response.ok) {
-                    document.getElementById('status').innerHTML = 'Trigger created! ID: ' + data.triggerId;
+                    document.getElementById('status').innerHTML = 'Trigger created successfully!';
+                    document.getElementById('triggerInfo').innerHTML = `Trigger ID: <strong>${data.triggerId
                     console.log('Trigger Created:', data);
                 } else {
                     document.getElementById('status').innerHTML = 'Failed to create trigger: ' + data.error.message;
