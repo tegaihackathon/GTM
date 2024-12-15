@@ -85,13 +85,22 @@
         <pre id="result"></pre>
         <div>
             <button id="authBtn">Authorize GTM API</button>
-            <button id="uploadTriggerBtn">Upload trigger.json</button>
-            <button id="uploadTagBtn">Upload tag.json</button> <!-- Button for uploading tag -->
+            <button id="uploadTriggerBtn" style="display:none">Upload custom trigger.json</button>
+            <button id="uploadTagBtn" style="display:none">Upload custom tag.json</button> <!-- Button for uploading tag -->
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
             <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
             
-            <!-- New Form for Pageview Trigger -->
-            <div id="pageviewForm">
+            <!-- Option to select between creating a Pageview Trigger or Uploading Custom Trigger -->
+            <div>
+                <h2>Select Trigger Type</h2>
+                <input type="radio" id="createPageviewTriggerOption" name="triggerType" value="pageview" checked />
+                <label for="createPageviewTriggerOption">Create Pageview Trigger</label><br/>
+                <input type="radio" id="uploadCustomTriggerOption" name="triggerType" value="customtrigger" />
+                <label for="uploadCustomTriggerOption">Upload Custom Trigger</label>
+            </div>
+        
+            <!-- Form for Creating Pageview Trigger -->
+            <div id="pageviewForm" style="display:block;">
                 <h2>Create Pageview Trigger</h2>
                 <label for="triggerName">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required />
@@ -102,8 +111,23 @@
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
             </div>
         
-            <!-- New Form for Pageview Tag -->
-            <div id="pageviewTagForm">
+            <!-- Form for uploading Custom Trigger JSON -->
+            <div id="customTriggerUploadForm" style="display:none;">
+                <h2>Upload Custom Trigger</h2>
+                <button id="uploadTriggerBtn">Upload Custom Trigger (in JSON format)</button>
+            </div>
+        
+            <!-- Option to select between creating a Pageview Tag or Uploading Custom Tag -->
+            <div>
+                <h2>Select Tag Type</h2>
+                <input type="radio" id="createPageviewTagOption" name="tagType" value="pageview" checked />
+                <label for="createPageviewTagOption">Create Pageview Tag</label><br/>
+                <input type="radio" id="uploadCustomTagOption" name="tagType" value="customtag" />
+                <label for="uploadCustomTagOption">Create Custom Tag</label>
+            </div>
+        
+            <!-- Form for Creating Pageview Tag -->
+            <div id="pageviewTagForm" style="display:block;">
                 <h2>Create Pageview Tag</h2>
                 <label for="tagName">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required />
@@ -112,6 +136,12 @@
                 <input type="text" id="eventName" placeholder="Enter event name" required />
                 <br/>
                 <button id="createPageviewTagBtn">Create Pageview Tag</button>
+            </div>
+        
+            <!-- Form for uploading Custom Tag JSON -->
+            <div id="customTagUploadForm" style="display:none;">
+                <h2>Upload Custom Tag</h2>
+                <button id="uploadTagBtn">Upload Custom Tag  (in JSON format)</button>
             </div>
         
             <div id="status"></div>
@@ -342,7 +372,7 @@
         }
     }
 
-    // Step 7: Handle form submission to create Pageview trigger
+    // Step 6: Handle form submission to create Pageview trigger
     document.getElementById('createPageviewTriggerBtn').addEventListener('click', () => {
         const triggerName = document.getElementById('triggerName').value;
         const pagePathValue = document.getElementById('pagePathValue').value;
@@ -377,7 +407,7 @@
         createTrigger(triggerConfig); // Call createTrigger with the generated config
     });
 
-    // Step 8: Handle form submission to create Pageview tag
+    // Step 7: Handle form submission to create Pageview tag
     document.getElementById('createPageviewTagBtn').addEventListener('click', () => {
         const tagName = document.getElementById('tagName').value;
         const eventName = document.getElementById('eventName').value;
@@ -414,10 +444,36 @@
         createTag(tagConfig); // Call createTag with the generated config
     });
 
-    // Step 9: Event listener for the authorize button
+    // Step 8: Toggle between Pageview Trigger and Custom Trigger upload
+    document.querySelectorAll('input[name="triggerType"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            if (document.getElementById('createPageviewTriggerOption').checked) {
+                document.getElementById('pageviewForm').style.display = 'block';
+                document.getElementById('customTriggerUploadForm').style.display = 'none';
+            } else {
+                document.getElementById('pageviewForm').style.display = 'none';
+                document.getElementById('customTriggerUploadForm').style.display = 'block';
+            }
+        });
+    });
+
+    // Step 9: Toggle between Pageview Tag and Custom Tag upload
+    document.querySelectorAll('input[name="tagType"]').forEach((radio) => {
+        radio.addEventListener('change', () => {
+            if (document.getElementById('createPageviewTagOption').checked) {
+                document.getElementById('pageviewTagForm').style.display = 'block';
+                document.getElementById('customTagUploadForm').style.display = 'none';
+            } else {
+                document.getElementById('pageviewTagForm').style.display = 'none';
+                document.getElementById('customTagUploadForm').style.display = 'block';
+            }
+        });
+    });
+
+    // Step 10: Event listener for the authorize button
     document.getElementById('authBtn').addEventListener('click', startAuth);
 
-    // Step 10: Check if we are on the callback URL to handle token extraction
+    // Step 11: Check if we are on the callback URL to handle token extraction
     if (window.location.hash) {
         handleCallback();
     }
