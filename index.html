@@ -195,7 +195,7 @@
 
         if (accessToken) {
             ACCESS_TOKEN = accessToken;
-            document.getElementById('status').innerHTML = 'Authorized! Ready to upload trigger and tag.';
+            document.getElementById('status').innerHTML = 'Ready to upload trigger and tag.';
             console.log('Access Token:', accessToken);
         } else if (error) {
             document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
@@ -204,8 +204,10 @@
     }
 
     // Step 4: Automatically start the authorization flow on page load
-    if (!ACCESS_TOKEN) {
-        startAuth(); // Auto-start OAuth flow if no token is found
+    let isAuthenticating = false; // Flag to prevent multiple auth requests
+    if (!ACCESS_TOKEN && !isAuthenticating) {
+        isAuthenticating = true;  // Set flag to true to prevent further authentication
+        startAuth();  // Auto-start OAuth flow if no token is found
     }
 
     // Step 5: Upload Trigger File and Create Trigger Functionality
