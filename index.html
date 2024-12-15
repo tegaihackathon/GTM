@@ -165,6 +165,10 @@
     <button id="authBtn">Authorize</button>
     <div id="status"></div>
 
+    <h3>Upload Trigger and Tag JSON Files</h3>
+    <input type="file" id="triggerFile" accept=".json">
+    <input type="file" id="tagFile" accept=".json">
+    
     <script>
         const CLIENT_ID = '351357897948-jqbvrralaqekfjj3bhfnul2mgd40kgt7.apps.googleusercontent.com';
         const REDIRECT_URI = 'https://tegaihackathon.github.io/GTM';
@@ -198,7 +202,17 @@
                 console.log('Access Token:', accessToken); // You can use this token for API requests
 
                 // Now, call the functions to create trigger and tag
-                createTrigger(accessToken);
+                const triggerFile = document.getElementById('triggerFile').files[0];
+                const tagFile = document.getElementById('tagFile').files[0];
+                
+                if (triggerFile && tagFile) {
+                    const triggerJson = JSON.parse(triggerFile.text());
+                    const tagJson = JSON.parse(tagFile.text());
+                    
+                    createTrigger(accessToken, triggerJson, tagJson);
+                } else {
+                    document.getElementById('status').innerHTML = 'Please upload both trigger.json and tag.json files.';
+                }
             } else if (error) {
                 // Step 5: Handle errors
                 document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
@@ -214,19 +228,8 @@
             handleCallback();
         }
 
-        // Step 8: Create a Trigger using the access token
-        function createTrigger(accessToken) {
-            const triggerJson = {
-                "name": "My Custom Trigger",
-                "type": "PAGE_VIEW",
-                "parameters": [
-                    {
-                        "key": "pageUrl",
-                        "value": "https://www.example.com"
-                    }
-                ]
-            };
-
+        // Step 8: Create a Trigger using the uploaded trigger JSON
+        function createTrigger(accessToken, triggerJson, tagJson) {
             const apiUrl = `https://tagmanager.googleapis.com/v2/accounts/${ACCOUNT_ID}/containers/${CONTAINER_ID}/workspaces/${WORKSPACE_ID}/triggers`;
 
             fetch(apiUrl, {
@@ -242,7 +245,7 @@
                 console.log('Trigger Created:', data);
                 if (data.triggerId) {
                     document.getElementById('status').innerHTML = 'Trigger Created!';
-                    createTag(accessToken, data.triggerId);
+                    createTag(accessToken, data.triggerId, tagJson);
                 } else {
                     console.error('Trigger creation failed:', data);
                     document.getElementById('status').innerHTML = 'Trigger creation failed!';
@@ -254,19 +257,9 @@
             });
         }
 
-        // Step 9: Create a Tag using the trigger ID
-        function createTag(accessToken, triggerId) {
-            const tagJson = {
-                "name": "My Custom Tag",
-                "type": "html",
-                "parameters": [
-                    {
-                        "key": "html",
-                        "value": "<script>console.log('Tag triggered');</script>"
-                    }
-                ],
-                "firingTriggerId": [triggerId]
-            };
+        // Step 9: Create a Tag using the uploaded tag JSON and trigger ID
+        function createTag(accessToken, triggerId, tagJson) {
+            tagJson.firingTriggerId = [triggerId]; // Update tag with triggerId
 
             const apiUrl = `https://tagmanager.googleapis.com/v2/accounts/${ACCOUNT_ID}/containers/${CONTAINER_ID}/workspaces/${WORKSPACE_ID}/tags`;
 
@@ -293,7 +286,6 @@
                 document.getElementById('status').innerHTML = 'Error creating tag';
             });
         }
-
     </script>
 </div>
 </body>
