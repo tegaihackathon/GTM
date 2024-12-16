@@ -85,14 +85,12 @@
         <pre id="result"></pre>
         <div>
             <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <label for="workspaceId" style="flex: 1; margin-right: 10px;">Workspace:</label>
+                <input type="text" id="workspaceId" placeholder="Enter workspace ID" required style="flex: 2; margin-right: 10px;"/>
                 <button id="authBtn">Authorize GTM</button>
                 <button id="uploadTriggerBtn">Create Custom Trigger</button>
                 <button id="uploadTagBtn">Create Custom Tag</button> <!-- Button for uploading tag -->
                 <!-- New Form for Workspace ID -->
-            	<div id="workspaceIdForm" style="display: flex; align-items: center; margin-bottom: 15px;">
-                <label for="workspaceId" style="flex: 1; margin-right: 10px;">Workspace:</label>
-                <input type="text" id="workspaceId" placeholder="Enter workspace ID" required style="flex: 2; margin-right: 10px;"/>
-            	</div>
                 <div id="status"></div>
                 <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
                 <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
