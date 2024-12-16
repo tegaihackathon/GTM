@@ -85,12 +85,17 @@
         <pre id="result"></pre>
         <div>
             <div style="display: flex; align-items: center; margin-bottom: 15px;">
-            <button id="authBtn">Authorize GTM</button>
-            <button id="uploadTriggerBtn">Create Custom Trigger</button>
-            <button id="uploadTagBtn">Create Custom Tag</button> <!-- Button for uploading tag -->
-            <div id="status"></div>
-            <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
-            <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
+                <button id="authBtn">Authorize GTM</button>
+                <button id="uploadTriggerBtn">Create Custom Trigger</button>
+                <button id="uploadTagBtn">Create Custom Tag</button> <!-- Button for uploading tag -->
+                <!-- New Form for Workspace ID -->
+            	<div id="workspaceIdForm" style="display: flex; align-items: center; margin-bottom: 15px;">
+                <label for="workspaceId" style="flex: 1; margin-right: 10px;">Workspace ID:</label>
+                <input type="text" id="workspaceId" placeholder="Enter workspace ID" required style="flex: 2; margin-right: 10px;"/>
+            	</div>
+                <div id="status"></div>
+                <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
+                <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
             </div>
             <!-- New Form for Pageview Trigger -->
             <div id="pageviewForm" style="display: flex; align-items: center; margin-bottom: 15px;">
@@ -199,6 +204,7 @@
     const STATE = 'xyz'; // A random state to protect against CSRF
     let ACCESS_TOKEN = null; // To store the token after authorization
     let createdTriggerId = null; // Store the created trigger ID
+    let workspaceId = null; // Store workspace ID
 
     // Step 1: Build the authorization URL
     const authUrl = `${AUTH_URI}?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}&response_type=${RESPONSE_TYPE}&state=${STATE}`;
@@ -253,7 +259,13 @@
     async function createTrigger(triggerConfig) {
         const accountId = '6260523786';
         const containerId = '201503240';
-        const workspaceId = '27';
+        
+        // Check if workspaceId is provided before making the API call
+        if (!workspaceId) {
+            alert('Please provide a Workspace ID!');
+            return;
+        }
+
         const url = `https://www.googleapis.com/tagmanager/v2/accounts/${accountId}/containers/${containerId}/workspaces/${workspaceId}/triggers`;
 
         try {
@@ -310,7 +322,13 @@
     async function createTag(tagConfig) {
         const accountId = '6260523786';
         const containerId = '201503240';
-        const workspaceId = '27';
+
+        // Check if workspaceId is provided before making the API call
+        if (!workspaceId) {
+            alert('Please provide a Workspace ID!');
+            return;
+        }
+
         const url = `https://www.googleapis.com/tagmanager/v2/accounts/${accountId}/containers/${containerId}/workspaces/${workspaceId}/tags`;
 
         try {
@@ -411,6 +429,11 @@
 
     // Step 9: Event listener for the authorize button
     document.getElementById('authBtn').addEventListener('click', startAuth);
+
+    // Event listener for the workspaceId input
+    document.getElementById('workspaceId').addEventListener('input', (event) => {
+        workspaceId = event.target.value; // Update the workspaceId when the input changes
+    });
 
     // Step 10: Check if we are on the callback URL to handle token extraction
     if (window.location.hash) {
