@@ -84,28 +84,29 @@
         <h3>Results:</h3>
         <pre id="result"></pre>
         <div>
+            <!-- Authorization and Upload Buttons -->
             <button id="authBtn">Authorize GTM API</button>
             <button id="uploadTriggerBtn" style="display:none">Upload custom trigger.json</button>
             <button id="uploadTagBtn" style="display:none">Upload custom tag.json</button> <!-- Button for uploading tag -->
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
             <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
             
-            <!-- Option to select between creating a Pageview Trigger or Uploading Custom Trigger -->
+            <!-- Select to choose Trigger Type -->
             <div>
                 <h3>Select Trigger Type</h3>
-                <input type="radio" id="createPageviewTriggerOption" name="triggerType" value="pageview" checked />
-                <label for="createPageviewTriggerOption">Create Pageview Trigger</label><br/>
-                <input type="radio" id="uploadCustomTriggerOption" name="triggerType" value="customtrigger" />
-                <label for="uploadCustomTriggerOption">Upload Custom Trigger</label>
+                <select id="triggerTypeSelect">
+                    <option value="pageview">Create Pageview Trigger</option>
+                    <option value="customtrigger">Create Custom Trigger</option>
+                </select>
             </div>
         
             <!-- Form for Creating Pageview Trigger -->
             <div id="pageviewForm" style="display:block;">
                 <h3>Create Pageview Trigger</h3>
-                <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
+                <label for="triggerName" style="flex: 1; margin-right: 10px;>Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required />
                 <br/>
-                <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Value:</label>
+                <label for="pagePathValue" style="flex: 1; margin-right: 10px;>Page Path Value:</label>
                 <input type="text" id="pagePathValue" placeholder="Enter page path value" required />
                 <br/>
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
@@ -117,22 +118,22 @@
                 <button id="uploadTriggerBtn">Upload Custom Trigger (in JSON format)</button>
             </div>
         
-            <!-- Option to select between creating a Pageview Tag or Uploading Custom Tag -->
+            <!-- Select to choose Tag Type -->
             <div>
                 <h3>Select Tag Type</h3>
-                <input type="radio" id="createPageviewTagOption" name="tagType" value="pageview" checked />
-                <label for="createPageviewTagOption" >Create Pageview Tag</label><br/>
-                <input type="radio" id="uploadCustomTagOption" name="tagType" value="customtag" />
-                <label for="uploadCustomTagOption">Create Custom Tag</label>
+                <select id="tagTypeSelect">
+                    <option value="pageview">Create Pageview Tag</option>
+                    <option value="customtag">Upload Custom Tag</option>
+                </select>
             </div>
         
             <!-- Form for Creating Pageview Tag -->
             <div id="pageviewTagForm" style="display:block;">
                 <h3>Create Pageview Tag</h3>
-                <label for="tagName"style="flex: 1; margin-right: 10px;">Tag Name:</label>
+                <label for="tagName" style="flex: 1; margin-right: 10px;>Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required />
                 <br/>
-                <label for="eventName" style="flex: 1; margin-right: 10px;">Event Name:</label>
+                <label for="eventName" style="flex: 1; margin-right: 10px;>Event Name:</label>
                 <input type="text" id="eventName" placeholder="Enter event name" required />
                 <br/>
                 <button id="createPageviewTagBtn">Create Pageview Tag</button>
@@ -445,29 +446,27 @@
     });
 
     // Step 8: Toggle between Pageview Trigger and Custom Trigger upload
-    document.querySelectorAll('input[name="triggerType"]').forEach((radio) => {
-        radio.addEventListener('change', () => {
-            if (document.getElementById('createPageviewTriggerOption').checked) {
-                document.getElementById('pageviewForm').style.display = 'block';
-                document.getElementById('customTriggerUploadForm').style.display = 'none';
-            } else {
-                document.getElementById('pageviewForm').style.display = 'none';
-                document.getElementById('customTriggerUploadForm').style.display = 'block';
-            }
-        });
+    document.getElementById('triggerTypeSelect').addEventListener('change', () => {
+        const selectedValue = document.getElementById('triggerTypeSelect').value;
+        if (selectedValue === 'pageview') {
+            document.getElementById('pageviewForm').style.display = 'block';
+            document.getElementById('customTriggerUploadForm').style.display = 'none';
+        } else {
+            document.getElementById('pageviewForm').style.display = 'none';
+            document.getElementById('customTriggerUploadForm').style.display = 'block';
+        }
     });
 
     // Step 9: Toggle between Pageview Tag and Custom Tag upload
-    document.querySelectorAll('input[name="tagType"]').forEach((radio) => {
-        radio.addEventListener('change', () => {
-            if (document.getElementById('createPageviewTagOption').checked) {
-                document.getElementById('pageviewTagForm').style.display = 'block';
-                document.getElementById('customTagUploadForm').style.display = 'none';
-            } else {
-                document.getElementById('pageviewTagForm').style.display = 'none';
-                document.getElementById('customTagUploadForm').style.display = 'block';
-            }
-        });
+    document.getElementById('tagTypeSelect').addEventListener('change', () => {
+        const selectedValue = document.getElementById('tagTypeSelect').value;
+        if (selectedValue === 'pageview') {
+            document.getElementById('pageviewTagForm').style.display = 'block';
+            document.getElementById('customTagUploadForm').style.display = 'none';
+        } else {
+            document.getElementById('pageviewTagForm').style.display = 'none';
+            document.getElementById('customTagUploadForm').style.display = 'block';
+        }
     });
 
     // Step 10: Event listener for the authorize button
