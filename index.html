@@ -93,7 +93,7 @@
             
             <!-- Select to choose Trigger Type -->
             <div>
-                <h3>Select Trigger Type</h3>
+                <span>Select Trigger Type</span>
                 <select id="triggerTypeSelect">
                     <option value="pageview">Create Pageview Trigger</option>
                     <option value="customtrigger">Create Custom Trigger</option>
@@ -103,10 +103,10 @@
             <!-- Form for Creating Pageview Trigger -->
             <div id="pageviewForm" style="display:block;">
                 <h3>Create Pageview Trigger</h3>
-                <label for="triggerName" style="flex: 1; margin-right: 10px;>Trigger Name:</label>
+                <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required />
                 <br/>
-                <label for="pagePathValue" style="flex: 1; margin-right: 10px;>Page Path Value:</label>
+                <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Value:</label>
                 <input type="text" id="pagePathValue" placeholder="Enter page path value" required />
                 <br/>
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
@@ -130,10 +130,10 @@
             <!-- Form for Creating Pageview Tag -->
             <div id="pageviewTagForm" style="display:block;">
                 <h3>Create Pageview Tag</h3>
-                <label for="tagName" style="flex: 1; margin-right: 10px;>Tag Name:</label>
+                <label for="tagName" style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required />
                 <br/>
-                <label for="eventName" style="flex: 1; margin-right: 10px;>Event Name:</label>
+                <label for="eventName" style="flex: 1; margin-right: 10px;">Event Name:</label>
                 <input type="text" id="eventName" placeholder="Enter event name" required />
                 <br/>
                 <button id="createPageviewTagBtn">Create Pageview Tag</button>
