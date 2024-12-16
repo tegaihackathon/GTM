@@ -84,15 +84,16 @@
         <h3>Results:</h3>
         <pre id="result"></pre>
         <div>
-            <button id="authBtn">Authorize GTM API</button>
-            <div id="status"></div>
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+            <button id="authBtn">Authorize GTM</button>
             <button id="uploadTriggerBtn">Upload trigger.json</button>
             <button id="uploadTagBtn">Upload tag.json</button> <!-- Button for uploading tag -->
+            <div id="status"></div>
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
             <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
-            
+            </div>
             <!-- New Form for Pageview Trigger -->
-            <div id="pageviewForm">
+            <div id="pageviewForm" style="display: flex; align-items: center; margin-bottom: 15px;>
                 <h3>Create Pageview Trigger</h3>
                 <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required style="flex: 2; margin-right: 10px;"/>
@@ -104,7 +105,7 @@
             </div>
         
             <!-- New Form for Pageview Tag -->
-            <div id="pageviewTagForm">
+            <div id="pageviewTagForm" style="display: flex; align-items: center; margin-bottom: 15px;>
                 <h3>Create Pageview Tag</h3>
                 <label for="tagName" style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required style="flex: 2; margin-right: 10px;"/>
