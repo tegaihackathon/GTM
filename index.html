@@ -93,28 +93,20 @@
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
             <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
             <!-- New Form for Pageview Trigger -->
-            <div id="pageviewForm">
-                <div  style="display: flex; align-items: center; margin-bottom: 15px;">
+            <div id="pageviewForm" style="display: flex; align-items: center; margin-bottom: 15px;">
                 <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required style="flex: 2; margin-right: 10px;"/>
-                </div>
-                <div  style="display: flex; align-items: center; margin-bottom: 15px;">
                 <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Contains:</label>
                 <input type="text" id="pagePathValue" placeholder="Enter page path value" required style="flex: 2; margin-right: 10px;"/>
-                </div>
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
             </div>
         
             <!-- New Form for Pageview Tag -->
-            <div id="pageviewTagForm">
-                <div  style="display: flex; align-items: center; margin-bottom: 15px;">
+            <div id="pageviewTagForm" style="display: flex; align-items: center; margin-bottom: 15px;">
                 <label for="tagName" style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required style="flex: 2; margin-right: 10px;"/>
-                </div>
-                <div  style="display: flex; align-items: center; margin-bottom: 15px;">
                 <label for="eventName" style="flex: 1; margin-right: 10px;">Event Name:</label>
                 <input type="text" id="eventName" placeholder="Enter event name" required style="flex: 2; margin-right: 10px;"/>
-                </div>
                 <button id="createPageviewTagBtn">Create Tag of Pageview Type</button>
             </div>
         
