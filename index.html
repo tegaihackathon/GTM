@@ -222,7 +222,7 @@
 
         if (accessToken) {
             ACCESS_TOKEN = accessToken;
-            document.getElementById('status').innerHTML = 'Authorized! Create trigger and tag.';
+            document.getElementById('status').innerHTML = 'Authorized!';
             console.log('Access Token:', accessToken);
         } else if (error) {
             document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
