@@ -86,26 +86,28 @@
         <div>
             <div style="display: flex; align-items: center; margin-bottom: 15px;">
             <button id="authBtn">Authorize GTM</button>
+            <div id="status"></div>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
             <button id="uploadTriggerBtn">Upload trigger.json</button>
             <button id="uploadTagBtn">Upload tag.json</button> <!-- Button for uploading tag -->
-            <div id="status"></div>
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
             <input type="file" id="tagFileInput" style="display:none" accept="application/json"/> <!-- File input for tag -->
             </div>
             <!-- New Form for Pageview Trigger -->
-            <div id="pageviewForm" style="display: flex; align-items: center; margin-bottom: 15px;>
+            <div id="pageviewForm">
                 <h3>Create Pageview Trigger</h3>
                 <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required style="flex: 2; margin-right: 10px;"/>
                 <br/>
-                <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Value:</label>
+                <label for="pagePathValue" style="flex: 1; margin-right: 10px;">Page Path Contains:</label>
                 <input type="text" id="pagePathValue" placeholder="Enter page path value" required style="flex: 2; margin-right: 10px;"/>
                 <br/>
                 <button id="createPageviewTriggerBtn">Create Trigger of Pageview Type</button>
             </div>
         
             <!-- New Form for Pageview Tag -->
-            <div id="pageviewTagForm" style="display: flex; align-items: center; margin-bottom: 15px;>
+            <div id="pageviewTagForm">
                 <h3>Create Pageview Tag</h3>
                 <label for="tagName" style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required style="flex: 2; margin-right: 10px;"/>
