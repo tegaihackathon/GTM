@@ -90,7 +90,7 @@
                 <button id="uploadTagBtn">Create Custom Tag</button> <!-- Button for uploading tag -->
                 <!-- New Form for Workspace ID -->
             	<div id="workspaceIdForm" style="display: flex; align-items: center; margin-bottom: 15px;">
-                <label for="workspaceId" style="flex: 1; margin-right: 10px;">Workspace ID:</label>
+                <label for="workspaceId" style="flex: 1; margin-right: 10px;">Workspace:</label>
                 <input type="text" id="workspaceId" placeholder="Enter workspace ID" required style="flex: 2; margin-right: 10px;"/>
             	</div>
                 <div id="status"></div>
@@ -222,7 +222,7 @@
 
         if (accessToken) {
             ACCESS_TOKEN = accessToken;
-            document.getElementById('status').innerHTML = 'Authorized! Ready to upload trigger and tag.';
+            document.getElementById('status').innerHTML = 'Authorized! Create trigger and tag.';
             console.log('Access Token:', accessToken);
         } else if (error) {
             document.getElementById('status').innerHTML = 'Authorization Failed: ' + error;
