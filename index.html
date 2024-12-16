@@ -86,6 +86,7 @@
         <div>
             <!-- Authorization and Upload Buttons -->
             <button id="authBtn">Authorize GTM API</button>
+            <span id="status"></span>
             <button id="uploadTriggerBtn" style="display:none">Upload custom trigger.json</button>
             <button id="uploadTagBtn" style="display:none">Upload custom tag.json</button> <!-- Button for uploading tag -->
             <input type="file" id="triggerFileInput" style="display:none" accept="application/json"/>
@@ -102,7 +103,7 @@
         
             <!-- Form for Creating Pageview Trigger -->
             <div id="pageviewForm" style="display:block;">
-                <h3>Create Pageview Trigger</h3>
+                <span>Create Pageview Trigger</span>
                 <label for="triggerName" style="flex: 1; margin-right: 10px;">Trigger Name:</label>
                 <input type="text" id="triggerName" placeholder="Enter trigger name" required />
                 <br/>
@@ -120,7 +121,7 @@
         
             <!-- Select to choose Tag Type -->
             <div>
-                <h3>Select Tag Type</h3>
+                <span>Select Tag Type</span>
                 <select id="tagTypeSelect">
                     <option value="pageview">Create Pageview Tag</option>
                     <option value="customtag">Upload Custom Tag</option>
@@ -129,7 +130,7 @@
         
             <!-- Form for Creating Pageview Tag -->
             <div id="pageviewTagForm" style="display:block;">
-                <h3>Create Pageview Tag</h3>
+                <span>Create Pageview Tag</span>
                 <label for="tagName" style="flex: 1; margin-right: 10px;">Tag Name:</label>
                 <input type="text" id="tagName" placeholder="Enter tag name" required />
                 <br/>
@@ -144,8 +145,6 @@
                 <h3>Upload Custom Tag</h3>
                 <button id="uploadTagBtn">Upload Custom Tag  (in JSON format)</button>
             </div>
-        
-            <div id="status"></div>
             <div id="triggerInfo" style="margin-top:10px; color:green;"></div>
             <div id="tagInfo" style="margin-top:10px; color:blue;"></div> <!-- For displaying tag info -->
         </div>
